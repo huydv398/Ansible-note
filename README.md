@@ -22,7 +22,7 @@ Các tài liệu có thể tham khảo
 
 ## 2 [Thực hiện tìm hiểu Ansible cơ bản](Tutorial/README.md)
 ## 3 Dùng Ansible với Netbox
-## 4 [Dùng Ansible với VMware ](Tutorial/README.md)
+## 4 [Dùng Ansible với VMware ](vmware/README.md)
 ### 
 ### 
 ### 
