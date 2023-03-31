@@ -1,0 +1,26 @@
+---
+vm_guest_id: centos7_64Guest
+
+# VM Hardware
+vm_hardware_memory_gb: 2
+vm_hardware_cpu: 1
+vm_hardware_controller: paravirtual
+
+# VM Disk
+vm_disk_size: 20
+vm_disk_type: thin
+vm_disk_datastore: CTVN-lab
+
+# VM Network
+vm_network_label: VLAN-21-MGNT
+vm_network_ip: 10.0.11.83
+vm_network_type: vmxnet3
+vm_network_netmask: 255.255.255.0
+vm_network_gateway: 10.0.11.1
+vm_network_domain: vlware.local
+vm_network_dns: 8.8.8.8
+vm_network_hostname: test-tmp3
+
+#template
+vm_guest_tmp: CentOS-7
+vm_guest_tmp_Datastore: CTVN-lab

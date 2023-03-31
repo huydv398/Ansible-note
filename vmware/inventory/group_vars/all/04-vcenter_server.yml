@@ -1,0 +1,8 @@
+---
+vcenter_hostname: 'vcenter.vlware.local'
+vcenter_username: 'administrator@vsphere.local'
+vcenter_password: 'Suncloud@2022'
+
+vcenter_default_datacenter: VLWAREDC
+vcenter_default_cluster: VLWARECL
+vcenter_default_folder: /
