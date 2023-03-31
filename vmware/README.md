@@ -128,7 +128,7 @@ Play là file: `vmware/roles/vmware-lab/tasks/create-vm-tmp.yml` nhưng sử d�
 
 ```
 ##vmware/lab-vmware.yml
-# cat vmware/vmware_create_virtual_machines.yml 
+# cat vmware/lab-vmware.yml
 ---
 - hosts: local
   roles:
@@ -188,7 +188,7 @@ Play là file: `vmware/roles/vmware_create_virtual_machine/tasks/main.yml` nhưn
 
 ```
 ##vmware/lab-vmware.yml
-# cat vmware/vmware_create_virtual_machines.yml 
+# cat vmware/lab-vmware.yml 
 ---
 - hosts: local
   roles:
