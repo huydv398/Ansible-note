@@ -1,0 +1,13 @@
+- name: Gather information about all datacenters
+  community.vmware.vmware_datacenter_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: no
+    schema: vsphere
+    properties:
+    - configStatus
+    - overallStatus
+  delegate_to: localhost
+  register: vcenter_info
+  

@@ -1,27 +1,26 @@
 Role Name
 =========
 
-A brief description of the role goes here.
-
+Role này dùng để thực hiện tạo hàng loạt các máy ảo được khai báo ở thư mục: `/~/vmware/inventory/host_vars`
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Chú ý chỉnh sửa các tham số của máy ảo tại thư mục `~/vmware/inventory/host_vars`
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Mô tả về các biến có thể thiết lập cho vai trò này sẽ có ở đây, bao gồm bất kỳ biến nào trong defaults/main.yml, vars/main.yml và bất kỳ biến nào có thể/nên được đặt thông qua tham số cho vai trò. Bất kỳ biến nào được đọc từ các vai trò khác và/hoặc phạm vi toàn cầu (ví dụ: hostvars, group vars, v.v.) cũng nên được đề cập ở đây.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Danh sách các vai trò khác được lưu trữ trên Galaxy sẽ có tại đây, cùng với mọi chi tiết liên quan đến các tham số có thể cần được đặt cho các vai trò khác hoặc các biến được sử dụng từ vai trò khác
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Bao gồm một ví dụ về cách sử dụng vai trò của bạn (ví dụ: với các biến được truyền dưới dạng tham số) cũng luôn tốt cho người dùng::
 
     - hosts: servers
       roles:
@@ -35,4 +34,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Phần tùy chọn dành cho tác giả vai trò bao gồm thông tin liên hệ hoặc trang web (HTML không được phép).

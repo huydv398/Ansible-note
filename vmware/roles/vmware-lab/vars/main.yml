@@ -1,0 +1,6 @@
+---
+# vars file for vmware
+vcenter_hostname: vcenter.vlware.local
+vcenter_username: administrator@vsphere.local
+vcenter_password: Suncloud@2022
+datacenter: VLWAREDC

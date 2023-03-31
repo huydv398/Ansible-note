@@ -1,0 +1,34 @@
+  - name: Create a Linux Virtual Machine
+    vmware_guest:
+      hostname: '{{ vcenter_hostname }}'
+      username: '{{ vcenter_username }}'
+      password: '{{ vcenter_password }}'
+      datacenter: '{{ datacenter }}'
+      validate_certs: no
+      name: c7-tmp-test3 #Đặt tên cho VM
+      cluster: VLWARECL #Tên Cluster
+      folder: /
+      template: CentOS-7 #Tên Template muốn clone
+      datastore: CTVN-lab # Tên Datastore
+      hardware:
+        memory_mb: 4096
+        num_cpus: 2
+        scsi: paravirtual
+      disk:
+        - size_gb: 20
+          type: thin
+      networks: #đặt IP Static
+        - name: VLAN-21-MGNT
+          ip: 10.0.11.130 
+          netmask: 255.255.255.0
+          gateway: 10.0.11.1
+          domain: vlware.local
+          dns_servers:
+          - 8.8.8.8
+          - 1.1.1.1
+      customization:
+        hostname: tmp3 #hostname sẽ đặt cho VM
+      wait_for_customization: yes
+      wait_for_ip_address: True #play sẽ đợi vCenter dò tìm địa chỉ IP trên máy ảo trước khi hoàn tất.
+      state: poweredon
+    delegate_to: localhost

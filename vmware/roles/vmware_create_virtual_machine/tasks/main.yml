@@ -1,6 +1,7 @@
 ---
 - name: Create a New Virtual Machine
   vmware_guest:
+    #thông tin vcenter được lấy từ file ~/vmware/inventory/group_vars/all/04-vcenter_server.yml
     hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
@@ -10,17 +11,18 @@
     folder: "{{ vcenter_default_folder }}"
     template: "{{ vm_guest_tmp }}" #Tên Template muốn clone
     datastore: "{{ vm_guest_tmp_Datastore }}" # Tên Datastore chứa TMP
-    name: "{{ inventory_hostname_short | upper }}"
+    name: "{{ inventory_hostname_short | upper }}" # lấy tên từ file host ~//vmware/inventory/hosts
+  # Các biến bên dưới được gọi ra từ ~/vmware/inventory/host_vars/vm-host
     guest_id: "{{ vm_guest_id }}"
     disk:
     - size_gb: "{{ vm_disk_size }}"
       type: "{{ vm_disk_type }}"
       datastore: "{{ vm_disk_datastore }}"
-    hardware:
+    hardware: 
       memory_mb: "{{ vm_hardware_memory_gb * 1024 }}"
       num_cpus: "{{ vm_hardware_cpu }}"
       scsi: "{{ vm_hardware_controller }}"
-    networks:
+    networks: 
     - name: "{{ vm_network_label }}"
       device_type: "{{ vm_network_type }}"
       ip: "{{ vm_network_ip }}" 
@@ -31,6 +33,6 @@
     customization:
       hostname: "{{ vm_network_hostname }}" #hostname sẽ đặt cho VM
     wait_for_customization: yes # tự động bật máy ảo khi hoàn thành
-    wait_for_ip_address: True #Đợi khi VM nhận IP máy ảo
-    state: poweredon
+    wait_for_ip_address: True #Đợi khi VM nhận IP máy ảo. sẽ đợi vCenter dò tìm địa chỉ IP trên máy ảo trước khi hoàn tất.
+    state: poweredon #Thực hiện bật máy ảo sau khi tạo
   delegate_to: localhost

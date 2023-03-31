@@ -1,0 +1,12 @@
+- name: collect a list of the datacenters
+  vmware.vmware_rest.vcenter_datastore_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: no
+    schema: vsphere
+    properties:
+    - configStatus
+    - overallStatus
+  delegate_to: localhost
+  register: my_datacenters

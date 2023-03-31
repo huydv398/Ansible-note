@@ -1,0 +1,4 @@
+---
+- hosts: local
+  roles:
+  - vmware-lab #chạy playbook ~/vmware/roles/vmware-lab/tasks/main.yml

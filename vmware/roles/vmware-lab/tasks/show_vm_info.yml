@@ -1,0 +1,28 @@
+---
+- name: get facts from vm
+  vmware_guest_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ datacenter }}'
+    validate_certs: no
+    name: HuyDV-Centos7-Client1
+    folder: /
+    name: LAB-AD01
+    schema: vsphere
+    properties:
+      - alarmActionsEnabled
+      - overallStatus
+      - config.name
+      - config.annotation
+      - config.flags
+      - config.managedBy
+      - guest.hostName
+      - guest.net
+      - summary.storage
+      - summary.quickStats
+      - summary.config
+      - summary.runtime
+      - config.memoryAllocation
+  delegate_to: localhost
+  register: facts

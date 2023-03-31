@@ -1,0 +1,45 @@
+---
+# - name: Gather information about all datacenters
+#   community.vmware.vmware_datacenter_info:
+#     hostname: vcenter.vlware.local #IP cua vcenter
+#     username: administrator@vsphere.local #Username cua vcenter
+#     password: Suncloud@2022 #Mat khau cua vcenter
+#     validate_certs: no
+#   register: facts
+#   delegate_to: localhost
+
+# - name: show msg
+#   debug:
+#     msg: "{{ facts }}"
+
+# - name: show msg
+#   debug:
+#     msg: "OK done------------"
+# - import_tasks: login_vcenter.yml
+# - name: show msg is name Datacenter 
+#   debug:
+#     msg: "{{ vcenter_info.datacenter_info|json_query('[].name') }}" # Chỉ show ra các tên Datacenter
+# - import_tasks: get_vm.yml
+# - name: show msg is list name vm
+#   debug:
+#     msg: "{{ vm_info.virtual_machines|json_query('[].guest_name') }}" #Chỉ hiển thị các tên máy ảo
+# - import_tasks: show_vm_info.yml
+# - name: show msg vm infomation 
+#   # debug: msg="{{facts}}"
+#   debug: msg="{{facts}}"
+
+ - import_tasks: create-vm-win-tmp.yml
+
+
+  # - name: Gather information about all datacenters
+  #   community.vmware.vmware_datacenter_info:
+  #     hostname: vcenter.vlware.local #IP cua vcenter
+  #     username: administrator@vsphere.local #Username cua vcenter
+  #     password: Suncloud@2022 #Mat khau cua vcenter
+  #     validate_certs: no
+  #   register: facts
+  #   delegate_to: localhost
+
+  # - name: show msg
+  #   debug:
+  #     msg: "{{ facts }}"

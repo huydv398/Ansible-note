@@ -1,0 +1,27 @@
+
+- name: Create a New Virtual Machine
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ datacenter }}'
+    validate_certs: no
+    name: Linux_VM
+    cluster: VLWARECL #tên cludter
+    folder: /
+    guest_id: centos7_64Guest
+    disk:
+    - size_gb: 20
+      type: thin
+      datastore: CTVN-lab #tên datasote
+    hardware:
+      memory_mb: 2048
+      num_cpus: 1
+      scsi: paravirtual
+      hotadd_cpu: True
+      hotadd_memory: True 
+    networks:
+    - name: "VM Network" #tên VLAN (Network)
+      device_type: vmxnet3
+#    state: poweredon
+  delegate_to: localhost
