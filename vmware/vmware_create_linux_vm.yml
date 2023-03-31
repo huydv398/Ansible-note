@@ -1,0 +1,32 @@
+---
+- hosts: local #'Local' được khai báo trong ~/Ansible-VMware/inventory/hosts
+  become: no
+  gather_facts: False
+  vars:
+  tasks:
+  - name: Create a New Virtual Machine
+    vmware_guest:
+      hostname: '{{ vcenter_hostname }}' #Các biến được khai báo trong ~/Ansible-VMware/inventory/group_vars/all/04-vcenter_server.yml
+      username: '{{ vcenter_username }}'
+      password: '{{ vcenter_password }}'
+      datacenter: '{{ datacenter }}'
+      validate_certs: no
+      name: Linux_VM_ansible #Tên VM sẽ được tạo trên Vcenter
+      cluster: VLWARECL #tên cludter
+      folder: /
+      guest_id: centos7_64Guest
+      disk:
+      - size_gb: 20
+        type: thin #Loại ổ cứng
+        datastore: CTVN-lab #tên datasote
+      hardware:
+        memory_mb: 2048
+        num_cpus: 1
+        scsi: paravirtual
+        hotadd_cpu: True
+        hotadd_memory: True 
+      networks:
+      - name: "VM Network" #tên VLAN (Network)
+        device_type: vmxnet3
+      state: poweredon
+    delegate_to: localhost

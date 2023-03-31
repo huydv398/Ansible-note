@@ -1,0 +1,5 @@
+---
+- hosts: linux  
+  connection: local
+  roles:
+   - vmware_create_virtual_machine
