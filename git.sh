@@ -1,5 +1,6 @@
-git add *
+git init
+git add .
 
 git commit -m "update"
 git commit -a 
-git push
+git push origin main
