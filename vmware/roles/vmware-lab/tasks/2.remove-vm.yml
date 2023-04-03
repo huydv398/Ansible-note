@@ -1,0 +1,50 @@
+- name: delete vm
+  hosts: localhost
+  tasks:
+
+  #Type1:
+    # - name: get fact by vm name
+    #   vmware_guest:
+    #     hostname: vcenter.vlware.local #IP cua vcenter
+    #     username: administrator@vsphere.local #Username cua vcenter
+    #     password: Suncloud@2022 #Mat khau cua vcenter
+    #     validate_certs: no
+    #     datacenter: VLWAREDC  #Ten datacenter
+    #     folder: /
+    #     name: LIN-SERVER-05
+    #   register: facts
+      
+    # - name: Remove a virtual machine by uuid
+    #   vmware_guest:
+    #     hostname: vcenter.vlware.local #IP cua vcenter
+    #     username: administrator@vsphere.local #Username cua vcenter
+    #     password: Suncloud@2022 #Mat khau cua vcenter
+    #     validate_certs: no
+    #     uuid: "{{ facts.instance.hw_product_uuid }}"
+    #     force: yes #Luu y: Tham so nay duoc them vao khi VM dang duoc poweron. Nen tat VM truoc khi xoa.
+    #     state: absent
+  
+  ##Type2:      
+    - name: Remove a virtual machine by uuid
+      vmware_guest:
+        hostname: vcenter.vlware.local #IP cua vcenter
+        username: administrator@vsphere.local #Username cua vcenter
+        password: Suncloud@2022 #Mat khau cua vcenter
+        validate_certs: no
+        datacenter: VLWAREDC  #Ten datacenter
+        name: LIN-SERVER-04
+        force: yes #Luu y: Tham so nay duoc them vao khi VM dang duoc poweron. Nen tat VM truoc khi xoa.
+        state: absent
+
+    # - name: msg get fact 
+    #   debug: 
+    #     msg: "{{ facts }}"   
+    # - name: msg get fact 
+    #   debug: 
+    #     msg: "{{ facts }}"   
+    # - name: msg get fact 
+    #   debug: 
+    #     msg: "{{ facts }}"   
+    # - name: msg get fact 
+    #   debug: 
+    #     msg: "{{ facts }}"   

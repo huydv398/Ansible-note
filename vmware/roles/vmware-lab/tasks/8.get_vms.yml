@@ -1,0 +1,35 @@
+## GET VM 
+---
+- name: Gather cluster information for vCenter
+  gather_facts: no
+  vars_files:
+    - ../vars/main.yml
+  hosts: localhost
+  tasks:
+    - name: Login into vCenter
+      uri:
+        url: https://{{ vcenter_hostname }}/api/session
+        force_basic_auth: yes
+        validate_certs: "{{ validate_certs }}"
+        method: POST
+        status_code: 201
+        user: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+      register: login
+      
+    - name: debug message
+      debug:
+        var: login
+
+    - name: Gather hosts info using REST API
+      uri:
+        url: "https://{{ vcenter_hostname }}/api/vcenter/vm"
+        force_basic_auth: yes
+        method: GET
+        validate_certs: no
+        headers:
+          vmware-api-session-id: "{{ login.json }}"
+      register: vms_info
+    - name: Print hosts info
+      debug:
+          var: vms_info

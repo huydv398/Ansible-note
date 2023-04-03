@@ -1,0 +1,30 @@
+# - name: poweron vm
+#   hosts: localhost
+#   tasks:
+#     - name: poweron vm
+#       vmware_guest:
+#         hostname: vcenter.vlware.local #IP cua vcenter
+#         username: administrator@vsphere.local #Username cua vcenter
+#         password: Suncloud@2022 #Mat khau cua vcenter
+#         datacenter: VLWAREDC
+#         validate_certs: no
+#         folder: /
+#         name: LIN-SERVER-03
+#         state: poweredon
+#       register: facts
+
+
+- name: poweroff vm
+  hosts: localhost
+  tasks:
+    - name: poweroff vm
+      vmware_guest:
+        hostname: vcenter.vlware.local #IP cua vcenter
+        username: administrator@vsphere.local #Username cua vcenter
+        password: Suncloud@2022 #Mat khau cua vcenter
+        datacenter: VLWAREDC
+        validate_certs: no
+        folder: /
+        name: LIN-SERVER-03
+        state: poweredoff
+      register: facts

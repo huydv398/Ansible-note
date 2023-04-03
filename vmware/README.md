@@ -1,4 +1,4 @@
-# Ansible-VRLCM
+# Ansible-VMware Part 2
 
 ```
 ~/Ansible-VMware/
@@ -244,11 +244,122 @@ Thực hiện chạy playbook:
 ansible-playbook vmware/lab-vmware.yml
 ```
 
-Đối với tạo window thì chưa cho fix tham số disk
+>**Chú ý**: Đối với tạo window thì chưa cho fix tham số disk
 
 ## 5 Thực hiện thay đổi thông số máy ảo
 Điều tuyệt vời về Ansible là nếu bạn chạy lại vở playbook này, nó sẽ không thử tạo một máy ảo khác. Thay vào đó, nó sẽ thoát ra với trạng thái OK, nếu nó phát hiện ra rằng máy ảo được chỉ định đã tồn tại và được bật nguồn.
 
-Nhưng nếu chúng tôi thực hiện một số thay đổi đối với cấu hình mà chúng tôi muốn áp dụng cho máy ảo thì sao? Chà, Ansible sẽ chỉ thực hiện những thay đổi này đối với máy ảo nếu tham số 'trạng thái' đã được đặt thành 'hiện tại' trong vở kịch. Ngoài ra, nếu bạn đang thực hiện thay đổi cấu hình cho phần cứng, thì máy ảo cũng có thể cần phải tắt nguồn trước (Ansible sẽ hiển thị lỗi nếu điều này là bắt buộc).
+Nhưng nếu chúng tôi thực hiện một số thay đổi đối với cấu hình mà chúng tôi muốn áp dụng cho máy ảo thì sao? Chà, Ansible sẽ chỉ thực hiện những thay đổi này đối với máy ảo nếu tham số `state: present` trong playbook. Ngoài ra, nếu bạn đang thực hiện thay đổi cấu hình cho phần cứng, thì máy ảo cũng có thể cần phải tắt nguồn trước (Ansible sẽ hiển thị lỗi nếu điều này là bắt buộc).
 
-Vì vậy, giả sử rằng máy ảo đã tắt và chúng tôi muốn kích hoạt hỗ trợ thêm nóng CPU và bộ nhớ. Chúng tôi chỉ cần thêm các cấu hình này trong phần phần cứng:
+![image](https://prnt.sc/JYQjGBvQHirK)
+
+Vì vậy, giả sử rằng máy ảo đã tắt và chúng tôi muốn kích hoạt hỗ trợ thêm nóng CPU và bộ nhớ. Chúng tôi chỉ cần thêm các cấu hình này trong phần phần cứng
+
+## 6 Thực hiện tạo máy ảo từ 1 File OVA
+??
+
+## 7 Tạo Playbook triển khai có thể tái sử dụng lại các biến
+Tận dụng các biến và các roles của ansible, đồng thời kết hợp để tạo ra nhiều máy ảo cùng lúc
+
+Role được khai báo tại đường dẫn `~/vmware/roles/vmware_create_virtual_machine`:
+
+```
+---
+- name: Create a New Virtual Machine
+  vmware_guest:
+    #thông tin vcenter được lấy từ file ~/vmware/inventory/group_vars/all/04-vcenter_server.yml
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: "{{ ova_validate_certs }}"
+    datacenter: "{{ vcenter_default_datacenter }}"
+    cluster: "{{ vcenter_default_cluster }}"
+    folder: "{{ vcenter_default_folder }}"
+    template: "{{ vm_guest_tmp }}" #Tên Template muốn clone
+    datastore: "{{ vm_guest_tmp_Datastore }}" # Tên Datastore chứa TMP
+    name: "{{ inventory_hostname_short | upper }}" # lấy tên từ file host ~//vmware/inventory/hosts
+  # Các biến bên dưới được gọi ra từ ~/vmware/inventory/host_vars/vm-host
+    guest_id: "{{ vm_guest_id }}"
+    disk:
+    - size_gb: "{{ vm_disk_size }}"
+      type: "{{ vm_disk_type }}"
+      datastore: "{{ vm_disk_datastore }}"
+    hardware: 
+      memory_mb: "{{ vm_hardware_memory_gb * 1024 }}"
+      num_cpus: "{{ vm_hardware_cpu }}"
+      scsi: "{{ vm_hardware_controller }}"
+    networks: 
+    - name: "{{ vm_network_label }}"
+      device_type: "{{ vm_network_type }}"
+      ip: "{{ vm_network_ip }}" 
+      netmask: "{{ vm_network_netmask }}"
+      gateway: "{{ vm_network_gateway }}"
+      domain: "{{ vm_network_domain }}"
+      dns_servers: "{{ vm_network_dns }}"
+    customization:
+      hostname: "{{ vm_network_hostname }}" #hostname sẽ đặt cho VM
+    wait_for_customization: yes # tự động bật máy ảo khi hoàn thành
+    wait_for_ip_address: True #Đợi khi VM nhận IP máy ảo. sẽ đợi vCenter dò tìm địa chỉ IP trên máy ảo trước khi hoàn tất.
+    state: poweredon #Thực hiện bật máy ảo sau khi tạo
+  delegate_to: localhost
+```
+
+Ở đây, hầu hết bạn có thể thấy rằng tôi gọi vào từ các biến `"{{ var}}"`. Vì roles trong ansible cần tuân thủ một số các quy tắc theo mức độ ưu tiên. Tôi khai báo ở 2 nơi:
+* `inventory/group_vars/all`: các thông tin khác sử dụng chung vcenter, dns, windows_domain
+* `inventory/host_vars`: gồm các thông tin chi tiết cho máy ảo. Tất cả các máy chủ muốn tạo được đặt tại đây:
+```
+---
+vm_guest_id: centos7_64Guest
+
+# VM Hardware
+vm_hardware_memory_gb: 2
+vm_hardware_cpu: 1
+vm_hardware_controller: paravirtual
+
+# VM Disk
+vm_disk_size: 20
+vm_disk_type: thin
+vm_disk_datastore: CTVN-lab
+
+# VM Network
+vm_network_label: VLAN-21-MGNT
+vm_network_type: vmxnet3
+vm_network_ip: 10.0.11.81
+vm_network_netmask: 255.255.255.0
+vm_network_gateway: 10.0.11.1
+vm_network_domain: vlware.local
+vm_network_dns: 8.8.8.8
+vm_network_hostname: test-tmp1
+
+#template
+vm_guest_tmp: CentOS-7
+vm_guest_tmp_Datastore: CTVN-lab
+```
+
+`inventory/hosts`: tập hợp các nhóm host cho ansible gọi đến khi thực hiện playbook. 
+```
+...
+[linux]
+lin-server-01
+lin-server-02
+lin-server-03
+lin-server-04
+lin-server-05
+...
+```
+Trong nhóm `linux` có 5 máy ảo, triển khai các máy ảo bằng playbook, tôi có thể gọi lệnh `ansible-playbook`.
+
+```
+ansible-playbook ~/vmware/vmware_create_virtual_machines.yml -i ~/vmware/inventory/hosts
+```
+
+Sau khi thực thi kết quả trả về như sau:
+
+![image](https://prnt.sc/F-xlur22BJ1y)
+
+![image](https://prnt.sc/KYFnrheg4c0a)
+
+Điều tuyệt vời về Ansible là nó sẽ thực thi những điều này song song.
+
+Tài liệu tham khảo: 
+* https://www.simplygeek.co.uk/2019/07/18/automate-vsphere-virtual-machine-and-ova-appliance-deployments-using-ansible/#Create_a_New_Virtual_Machine_no_template

@@ -10,10 +10,14 @@
       folder: /
       template: WIN16-TMP #Tên Template muốn clone
       datastore: CTVN-lab # Tên Datastore
+      state: present
       hardware:
         memory_mb: 4096
-        num_cpus: 2
+        num_cpus: 16
         scsi: paravirtual
+        hotadd_cpu: True
+        hotadd_memory: True
+
       networks: #đặt IP Static
         - name: VLAN-21-MGNT
           ip: 10.0.11.130 
@@ -24,7 +28,7 @@
           - 8.8.8.8
           - 1.1.1.1
       customization:
-        password: Suncloud@2022!
+        password: Suncloud@2023!@#
         dns_servers:
         - 8.8.8.8
         - 10.0.11.254
@@ -32,5 +36,5 @@
         hostname: tmp4 #hostname sẽ đặt cho VM
       wait_for_customization: yes
       wait_for_ip_address: True #play sẽ đợi vCenter dò tìm địa chỉ IP trên máy ảo trước khi hoàn tất.
-      state: poweredon
+      # state: poweredon
     delegate_to: localhost

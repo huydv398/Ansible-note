@@ -14,6 +14,6 @@
 1. [Fact](6.fact.md)
     * Ansible facts là dữ liệu được thu thập từ các nút mục tiêu và được trả lại kết quả về cho các nút controller.
 1. [When](7.when.md)
-1. []()
+1. [Template](8.template.md)
 1. []()
 1. []()

@@ -1,0 +1,16 @@
+---
+- name: get specific facts from vm
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: get facts from vm
+      vmware_vm_info:
+        hostname: vcenter.vlware.local #IP cua vcenter
+        username: administrator@vsphere.local #Username cua vcenter
+        password: Suncloud@2022 #Mat khau cua vcenter
+        validate_certs: no
+      register: vm_info
+
+    - name: show msg
+      debug:
+        msg: "{{ vm_info.virtual_machines|json_query('[].guest_name') }}"

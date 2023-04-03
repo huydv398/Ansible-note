@@ -1,7 +1,7 @@
 # Ansible-note
 ## 1.  Ansible cơ bản
 Tìm hiểu Ansible cơ bản qua các link sau:
-### Thực hiện cài đặt 
+### 1.1 Thực hiện cài đặt 
 Cài đặt Ansible cơ bản trên Ubuntu 22 (Hoặc 20, 18 mà cứ bản mới nhất mà chơi). Cái này có thể lên háng để tìm cách cài chỉ cần chạy lệnh là nó tự cài thôi:
 ```
 sudo apt-add-repository ppa:ansible/ansible
@@ -22,7 +22,11 @@ Các tài liệu có thể tham khảo
 
 ## 2 [Thực hiện tìm hiểu Ansible cơ bản](Tutorial/README.md)
 ## 3 Dùng Ansible với Netbox
-## 4 [Dùng Ansible với VMware ](vmware/README.md)
+## 4 [Dùng Ansible với VMware - Cơ bản ](vmware/roles/vmware-lab/README.md)
+Sẽ có 2 các dùng với VMware là Native và URI. Phần này sẽ hướng dẫn triển khai kết nối tới VMware và lấy các thông tin qua Ansible
+
+## 5 [Dùng Ansible với VMware - Nâng cao - Áp dụng vào triển khai thực tế ](vmware/README.md)
+ Tại phần này sẽ giúp các bạn triển khai tạo máy ảo
 ### 
 ### 
 ### 
