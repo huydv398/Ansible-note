@@ -27,6 +27,7 @@ Sẽ có 2 các dùng với VMware là Native và URI. Phần này sẽ hướng
 
 ## 5 [Dùng Ansible với VMware - Nâng cao - Áp dụng vào triển khai thực tế ](vmware/README.md)
  Tại phần này sẽ giúp các bạn triển khai tạo máy ảo
+## 6 [Dùng Ansible để gửi thông điệp về mail và telegram ](vmware/roles/send-alear/README.md)
 ### 
 ### 
 ### 
