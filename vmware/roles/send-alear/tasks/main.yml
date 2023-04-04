@@ -1,0 +1,26 @@
+---
+# tasks file for send-alear
+- name: msg
+  debug:
+    msg: "{{ mail_host }}"
+- name: Sending an e-mail using Gmail SMTP servers
+  community.general.mail:
+    host: "{{ mail_host }}"
+    from: "{{ mail_username }}"
+    port: "{{ mail_port }}"
+    username: "{{ mail_username }}"
+    password: "{{ mail_password }}"
+    to: "{{ user_to }}"
+    subject: Ansible-report
+    body: Test message from Ansible to mail
+  delegate_to: localhost
+
+- name: Send notify to Telegram
+  community.general.telegram:
+    token: "{{ api_token }}"
+    api_args:
+      chat_id: "{{ chat_ID }}"
+      parse_mode: "markdown"
+      text: "Test msg to tele: `msg ok`"
+      disable_web_page_preview: true
+      disable_notification: true

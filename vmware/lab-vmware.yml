@@ -1,4 +1,13 @@
 ---
-- hosts: local
+- hosts: localhost
+  become: no
+  gather_facts: False
+  vars:
+    user_to: #khai báo các địa chi cần gửi thông tin đến
+      - huydv@suncloud.vn
+      - huydv398@gmail.com
   roles:
-  - vmware-lab #chạy playbook ~/vmware/roles/vmware-lab/tasks/main.yml
+  - send-alear
+  # - vmware-lab #chạy playbook ~/vmware/roles/vmware-lab/tasks/main.yml
+  # - ansible-vmware-vm-inventory-report-generator
+    

@@ -28,8 +28,7 @@
 #   # debug: msg="{{facts}}"
 #   debug: msg="{{facts}}"
 
- - import_tasks: create-vm-win-tmp.yml
-
+ - import_tasks: 9.test-sendmail.yml
 
   # - name: Gather information about all datacenters
   #   community.vmware.vmware_datacenter_info:
