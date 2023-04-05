@@ -1,0 +1,25 @@
+- name: "add Divece modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - var.yml
+  vars:
+    Server:
+    - { dev_name: "server 2", device_type: "dell_poweredge_r740", device_role: "server", dev_rack: "A1", position: "17"}
+  tasks:
+    - name: Create device within NetBox with only required information
+      netbox.netbox.netbox_device:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ item.dev_name }}"
+          device_type: "{{ item.device_type }}"
+          device_role: server
+          site: "{{ Site }}"
+          rack: "{{ item.dev_rack }}"
+          position: "{{ item.position }}"
+          face: Front
+        state: present
+      loop: "{{ Server }}"
+    

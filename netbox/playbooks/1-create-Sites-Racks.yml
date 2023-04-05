@@ -1,0 +1,66 @@
+- name: "Test NetBox module"
+  connection: local
+  hosts: localhost
+  vars_files:
+    - var.yml
+  gather_facts: False
+  tasks:
+    - name: Create tenant within NetBox with only required information
+      netbox.netbox.netbox_tenant:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data: 
+          name: huydv
+        state: present  #absent || present
+
+    
+    #netbox.netbox.netbox_region
+    - name: Create region within NetBox with only required information
+      netbox.netbox.netbox_region:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ region_DC }}"
+        state: present
+    - name: Create site group within NetBox with only required information
+      netbox.netbox.netbox_site_group:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ Site_group }}"
+        state: present
+    - name: Create site with all parameters
+      netbox.netbox.netbox_site:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ Site }}"
+          status: Active #Planned ||
+          region: "{{ region_DC }}"
+          site_group: "{{ Site_group }}"
+          tenant: SUNCLOUD
+          time_zone: Asia/Ho Chi Minh
+          description: test description
+          physical_address: Nam thang long
+          slug: idc-vnpt-ntl
+          comments: ### Placeholder
+        state: present
+    - name: Create location within NetBox with only required information
+      netbox.netbox.netbox_location:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ item }}"
+          site: "{{ Site }}"
+        state: present
+      loop: "{{ Location_name }}"
+    - name: Create rack within NetBox with only required information
+      netbox.netbox.netbox_rack:
+        netbox_url: "{{ netbox_url }}"
+        netbox_token: "{{ netbox_token }}"
+        data:
+          name: "{{ item.Name }}"
+          site: "{{ item.Site }}"
+          location: "{{ item.Location }}"
+        state: present
+      loop: "{{ Rack }}"

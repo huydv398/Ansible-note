@@ -1,0 +1,16 @@
+---
+netbox_url: http://10.0.11.121
+netbox_token: 151df650c231357264bd2a1bcbeadd6a0b8ff52f
+region_DC: 'Mien Bac'
+Site_group: VNPT
+Site: IDC VNPT - NTL
+Location_name: 
+  - Phase1
+  - Phase2
+Rack: 
+  - { Name: 'A1', Site: 'IDC VNPT - NTL', Location: 'Phase1' } 
+  - { Name: 'A2', Site: 'IDC VNPT - NTL', Location: 'Phase1' } 
+  - { Name: 'A3', Site: 'IDC VNPT - NTL', Location: 'Phase1' } 
+  - { Name: 'B1', Site: 'IDC VNPT - NTL', Location: 'Phase2' } 
+  - { Name: 'B2', Site: 'IDC VNPT - NTL', Location: 'Phase2' } 
+  - { Name: 'B3', Site: 'IDC VNPT - NTL', Location: 'Phase2' } 

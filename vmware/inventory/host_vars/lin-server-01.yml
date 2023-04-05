@@ -31,3 +31,5 @@ password_VM: Suncloud@2023!@#
 #netbox
 cluster_name: vmware-lab
 tenant_name: SUNCLOUD
+
+user_login: root

@@ -1,5 +1,5 @@
 ---
-# tasks file for netbox-note-vm
+# tasks file for netbox-note-vm 
 - name: Add a virtual machine to NetBox
   netbox.netbox.netbox_virtual_machine:
     netbox_url: "{{ netbox_url }}"
@@ -8,6 +8,9 @@
       name: "{{ inventory_hostname_short | upper }}"
       cluster: "{{ cluster_name }}"
       tenant: "{{ tenant_name }}"
+      vcpus: "{{ vm_hardware_cpu }}"
+      memory: "{{ vm_hardware_memory_gb }}"
+      disk: "{{ vm_disk_size }}"
   # loop: "{{ target_vm_info }}"
   delegate_to: localhost
 
@@ -17,6 +20,19 @@
     netbox_token: "{{ netbox_token }}"
     data:
       virtual_machine: "{{ inventory_hostname_short | upper }}"
-      name: "Network Adapter 1"
+      name: "{{ interface_name }}"
+
   # loop: "{{ target_vm_info }}"
+  delegate_to: localhost
+- name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1 (NetBox 2.9+)
+  netbox.netbox.netbox_ip_address:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ netbox_token }}"
+    data:
+      address: "{{ netbox_ip }}"
+      assigned_object:
+        name: "{{ interface_name }}"
+        virtual_machine: "{{ inventory_hostname_short | upper }}"
+      
+    state: present
   delegate_to: localhost

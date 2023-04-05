@@ -54,41 +54,58 @@
     datacenter: "{{ vcenter_default_datacenter }}"
     name: "{{ inventory_hostname_short | upper }}"
     schema: vsphere
-    properties:
-      - alarmActionsEnabled
-      - overallStatus
-      - config.name
-      - config.annotation
-      - config.flags
-      - config.managedBy
-      - guest.hostName
-      - guest.net
-      - summary.storage
-      - summary.quickStats
-      - summary.config
-      - summary.runtime
-      - config.memoryAllocation
+    # properties:
+    #   - alarmActionsEnabled
+    #   - overallStatus
+    #   - config.name
+    #   - config.annotation
+    #   - config.flags
+    #   - config.managedBy
+    #   - guest.hostName
+    #   - guest.net
+    #   - summary.storage
+    #   - summary.quickStats
+    #   - summary.config
+    #   - summary.runtime
+    #   - config.memoryAllocation
   register: gather_facts_for_vm_each_properties
   delegate_to: localhost
 - name: show msg 1
+  # copy:
+  #   content: "{{ gather_facts_for_vm_each_properties }}"
+  #   dest: "file"
+  # delegate_to: localhost
   debug:
-    msg: "{{ gather_facts_for_vm_each_properties.guest.net }}"
-#.instance.guest.net[3].ipAddress[0] 
-- name: get fact by vm name
-  vmware_guest:
-    hostname: "{{ vcenter_hostname }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    validate_certs: no
-    datacenter: "{{ vcenter_default_datacenter }}"
-    validate_certs: no
-    folder: /
-    name: "{{ inventory_hostname_short | upper }}"
-  register: facts_vm
-  delegate_to: localhost
-- name: show msg 2
-  debug:
-    msg: "{{ facts_vm.instance.hw_guest_full_name }}"
+    msg: "{{ gather_facts_for_vm_each_properties.instance.guest.hostName }}"
+
+# - name: show msg 1
+#   debug:
+#     msg: "{{ gather_facts_for_vm_each_properties.instance.guest.net | to_json  }}"
+#   register: gather_facts_for_vm_each_properties1
+# - name: show msg 1
+#   debug:
+#     msg: "{{ gather_facts_for_vm_each_properties1 | json_query('connected') }}"
+  # register: gather_facts_for_vm_each_properties1  
+# - name: "Display all server names"
+#   debug:
+#     var: item
+#   loop: "{{ domain_definition | json_query('domain.server[*].name') }}"
+# #.instance.guest.net[3].ipAddress[0] 
+# - name: get fact by vm name
+#   vmware_guest:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     validate_certs: no
+#     datacenter: "{{ vcenter_default_datacenter }}"
+#     validate_certs: no
+#     folder: /
+#     name: "{{ inventory_hostname_short | upper }}"
+#   register: facts_vm
+#   delegate_to: localhost
+# - name: show msg 2
+#   debug:
+#     msg: "{{ facts_vm.instance.hw_guest_full_name }}"
     # vm_info.virtual_machines|json_query('[].guest_name'
 
   # loop: "{{ vms.virtual_machines }}"
