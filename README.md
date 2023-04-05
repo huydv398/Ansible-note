@@ -28,7 +28,7 @@ Sẽ có 2 các dùng với VMware là Native và URI. Phần này sẽ hướng
 ## 5 [Dùng Ansible với VMware - Nâng cao - Áp dụng vào triển khai thực tế ](vmware/README.md)
  Tại phần này sẽ giúp các bạn triển khai tạo máy ảo
 ## 6 [Dùng Ansible để gửi thông điệp về mail và telegram ](vmware/roles/send-alear/README.md)
-### 7. Kết hợp từ phần 3 đến phần 6: Tạo máy ảo - Note netbox - Send alear
+## 7. Kết hợp từ phần 3 đến phần 6: Tạo máy ảo - Note netbox - Send alear
 
 
 Thông tin máy ảo được note tại file `vmware/inventory/host_vars/[name server] `
