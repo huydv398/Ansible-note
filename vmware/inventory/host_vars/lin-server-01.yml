@@ -1,5 +1,5 @@
 ---
-vm_guest_id: centos7_64Guest
+vm_guest_id: ubuntu_64Guest
 
 # VM Hardware
 vm_hardware_memory_gb: 2
@@ -12,7 +12,7 @@ vm_disk_type: thin
 vm_disk_datastore: CTVN-lab
 
 # VM Network
-vm_network_label: VLAN-21-MGNT
+vm_network_label: DPG-VLAN21
 vm_network_type: vmxnet3
 vm_network_ip: 10.0.11.81
 vm_network_netmask: 255.255.255.0
@@ -22,5 +22,12 @@ vm_network_dns: 8.8.8.8
 vm_network_hostname: test-tmp1
 
 #template
-vm_guest_tmp: CentOS-7
+vm_guest_tmp: TEMP-U20
 vm_guest_tmp_Datastore: CTVN-lab
+
+#password vm
+password_VM: Suncloud@2023!@#
+
+#netbox
+cluster_name: vmware-lab
+tenant_name: SUNCLOUD

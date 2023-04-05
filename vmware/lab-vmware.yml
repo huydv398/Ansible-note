@@ -3,11 +3,13 @@
   become: no
   gather_facts: False
   vars:
+    export_type: html
     user_to: #khai báo các địa chi cần gửi thông tin đến
       - huydv@suncloud.vn
       - huydv398@gmail.com
   roles:
-  - send-alear
+  
+  # - send-alear
   # - vmware-lab #chạy playbook ~/vmware/roles/vmware-lab/tasks/main.yml
   # - ansible-vmware-vm-inventory-report-generator
     

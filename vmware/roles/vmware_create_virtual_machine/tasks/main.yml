@@ -32,6 +32,7 @@
       dns_servers: "{{ vm_network_dns }}"
     customization:
       hostname: "{{ vm_network_hostname }}" #hostname sẽ đặt cho VM
+      password: "{{ password_VM }}"
     wait_for_customization: yes # tự động bật máy ảo khi hoàn thành
     wait_for_ip_address: True #Đợi khi VM nhận IP máy ảo. sẽ đợi vCenter dò tìm địa chỉ IP trên máy ảo trước khi hoàn tất.
     state: poweredon #Thực hiện bật máy ảo sau khi tạo

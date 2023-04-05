@@ -1,0 +1,8 @@
+---
+- hosts: linux
+  become: no
+  gather_facts: False
+  roles:
+  - vmware_create_virtual_machine
+  - netbox-note-vm
+  - ansible-vmware-vm-inventory-report-generator

@@ -1,0 +1,22 @@
+---
+# tasks file for netbox-note-vm
+- name: Add a virtual machine to NetBox
+  netbox.netbox.netbox_virtual_machine:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ netbox_token }}"
+    data:
+      name: "{{ inventory_hostname_short | upper }}"
+      cluster: "{{ cluster_name }}"
+      tenant: "{{ tenant_name }}"
+  # loop: "{{ target_vm_info }}"
+  delegate_to: localhost
+
+- name: Add an interface to the virtual machine
+  netbox.netbox.netbox_vm_interface:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ netbox_token }}"
+    data:
+      virtual_machine: "{{ inventory_hostname_short | upper }}"
+      name: "Network Adapter 1"
+  # loop: "{{ target_vm_info }}"
+  delegate_to: localhost

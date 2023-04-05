@@ -7,80 +7,132 @@
 #   # vars:
 #   #   export_type: html # choices['html', 'csv']
 #   tasks:
-- name: Gather fact for all vm
-  vmware_datacenter_info:
-    hostname: "{ vcenter_hostname }"
-    username: "{ vcenter_username }"
-    password: "{ vcenter_password }"
+# - name: Gather fact for all vm
+#   community.vmware.vmware_guest_info:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     datacenter: VLWAREDC
+#     validate_certs: no
+#     register: vms
+
+# - name: show msg
+#   debug:
+#     msg: "{{ facts }}"
+# - name: Gather information about all datacenters
+#   vmware_vm_info:
+#     hostname: vcenter.vlware.local #IP cua vcenter
+#     username: administrator@vsphere.local #Username cua vcenter
+#     password: Suncloud@2022 #Mat khau cua vcenter
+#     validate_certs: no
+#   register: vms
+#   delegate_to: localhost
+
+
+# - name: Gather facts for vm summary
+#   vmware_guest:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     validate_certs: no
+#     datacenter: "{{ vcenter_default_datacenter }}"
+#     name: "{{ item.guest_name }}"
+#   register: gather_facts_for_vm_summary_result
+#   loop: "{{ vms.virtual_machines }}"
+#   loop_control:
+#     label: "{{ item.guest_name }}"
+# # - name: show msg
+# #   debug:
+# #     msg: "{{ gather_facts_for_vm_summary_result }}"
+  
+- name: Gather facts for vm each properties
+  vmware_guest_info:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
     validate_certs: no
-  register: vms
+    datacenter: "{{ vcenter_default_datacenter }}"
+    name: "{{ inventory_hostname_short | upper }}"
+    schema: vsphere
+    properties:
+      - alarmActionsEnabled
+      - overallStatus
+      - config.name
+      - config.annotation
+      - config.flags
+      - config.managedBy
+      - guest.hostName
+      - guest.net
+      - summary.storage
+      - summary.quickStats
+      - summary.config
+      - summary.runtime
+      - config.memoryAllocation
+  register: gather_facts_for_vm_each_properties
+  delegate_to: localhost
+- name: show msg 1
+  debug:
+    msg: "{{ gather_facts_for_vm_each_properties.guest.net }}"
+#.instance.guest.net[3].ipAddress[0] 
+- name: get fact by vm name
+  vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ vcenter_default_datacenter }}"
+    validate_certs: no
+    folder: /
+    name: "{{ inventory_hostname_short | upper }}"
+  register: facts_vm
+  delegate_to: localhost
+- name: show msg 2
+  debug:
+    msg: "{{ facts_vm.instance.hw_guest_full_name }}"
+    # vm_info.virtual_machines|json_query('[].guest_name'
 
-  # - name: Gather facts for vm summary
-  #   vmware_guest_facts:
-  #     hostname: "{{ vcenter_hostname }}"
-  #     username: "{{ vcenter_username }}"
-  #     password: "{{ password }}"
-  #     validate_certs: no
-  #     datacenter: DC
-  #     name: "{{ item.guest_name }}"
-  #   register: gather_facts_for_vm_summary_result
-  #   loop: "{{ vms.virtual_machines }}"
-  #   loop_control:
-  #     label: "{{ item.guest_name }}"
+  # loop: "{{ vms.virtual_machines }}"
+  # loop_control:
+  #   label: "{{ item.guest_name }}"
 
-  # - name: Gather facts for vm each properties
-  #   vmware_guest_facts:
-  #     hostname: "{{ vcenter_hostname }}"
-  #     username: "{{ vcenter_username }}"
-  #     password: "{{ password }}"
-  #     validate_certs: no
-  #     datacenter: DC
-  #     name: "{{ item.guest_name }}"
-  #     schema: vsphere
-  #     properties:
-  #       - alarmActionsEnabled
-  #       - overallStatus
-  #       - config.name
-  #       - config.annotation
-  #       - config.flags
-  #       - config.managedBy
-  #       - guest.hostName
-  #       - guest.net
-  #       - summary.storage
-  #       - summary.quickStats
-  #       - summary.config
-  #       - summary.runtime
-  #       - config.memoryAllocation
-  #   register: gather_facts_for_vm_each_properties
-  #   loop: "{{ vms.virtual_machines }}"
-  #   loop_control:
-  #     label: "{{ item.guest_name }}"
+# - name: Set of combine data
+#   set_fact:
+#     data: >-
+#       {{ data | default([])
+#         + [item.instance | combine(combine_data.instance)]
+#       }}
+#   vars:
+#     combine_data: >-
+#       {{ gather_facts_for_vm_each_properties.results
+#         | selectattr('instance.config.name','equalto',item['instance']['hw_name'])
+#         | list
+#         | first
+#       }}
+  # loop: "{{ gather_facts_for_vm_summary_result.results }}"
+  # loop_control:
+  #   label: "{{ item.instance.hw_name }}"
 
-  # - name: Set of combine data
-  #   set_fact:
-  #     data: >-
-  #       {{ data | default([])
-  #         + [item.instance | combine(combine_data.instance)]
-  #       }}
-  #   vars:
-  #     combine_data: >-
-  #       {{ gather_facts_for_vm_each_properties.results
-  #         | selectattr('instance.config.name','equalto',item['instance']['hw_name'])
-  #         | list
-  #         | first
-  #       }}
-  #   loop: "{{ gather_facts_for_vm_summary_result.results }}"
-  #   loop_control:
-  #     label: "{{ item.instance.hw_name }}"
+# - name: Generate VM inventory report(html)
+#   template:
+#     src: templates/vmware_vm_inventory_report.j2
+#     dest: vmware_vm_inventory_report.html
+#   when: export_type == "html"
 
-  # - name: Generate VM inventory report(html)
-  #   template:
-  #     src: templates/vmware_vm_inventory_report.j2
-  #     dest: vmware_vm_inventory_report.html
-  #   when: export_type == "html"
+# - name: Generate VM inventory report(csv)
+#   template:
+#     src: templates/vmware_vm_inventory_report_csv.j2
+#     dest: vmware_vm_inventory_report.csv
+#   when: export_type == "csv"
 
-  # - name: Generate VM inventory report(csv)
-  #   template:
-  #     src: templates/vmware_vm_inventory_report_csv.j2
-  #     dest: vmware_vm_inventory_report.csv
-  #   when: export_type == "csv"
+- name: Sending contents of a file in the email body
+  mail:
+    host: "{{ mail_host }}"
+    port: "{{ mail_port }}"
+    username: "{{ mail_username }}"
+    password: "{{ mail_password }}"
+    from: "{{ mail_username }}"
+    to: huydv@suncloud.vn
+    subject: Change log
+    body: "{{ lookup('template','templates/email-template-demo.html.j2') }}"
+    subtype: html
+  delegate_to: localhost

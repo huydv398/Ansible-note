@@ -245,7 +245,23 @@ Lấy thông tin của máy ảo:
 ## 5. Lấy thông tin datacenter
 
 ```
+---
+- name: get specific facts from vm
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Gather information about all datacenters
+      community.vmware.vmware_datacenter_info:
+        hostname: vcenter.vlware.local #IP cua vcenter
+        username: administrator@vsphere.local #Username cua vcenter
+        password: Suncloud@2022 #Mat khau cua vcenter
+        validate_certs: no
+      register: facts
+      delegate_to: localhost
 
+    - name: show msg
+      debug:
+        msg: "{{ facts }}"
 ```
 
 Kết quả:

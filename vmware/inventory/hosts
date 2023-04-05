@@ -8,9 +8,9 @@ win-server-03
 
 [linux]
 lin-server-01
-lin-server-02
-lin-server-03
-lin-server-04
-lin-server-05
+# lin-server-02
+# lin-server-03
+# lin-server-04
+# lin-server-05
 
 [ova_appliances]
